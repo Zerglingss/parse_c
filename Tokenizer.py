@@ -1,5 +1,5 @@
 # Tokenizer.py
-# Jan 3, 2025 Higgins
+# Jan 3, 2025
 # Jan 11, 2025 Updated, some cleanup and data veryification
 # This file is still in the very early stages of development
 # Break a simple c.source code file into tokens
@@ -8,15 +8,15 @@ from typing import Dict, Optional
 import re
 
 
-from TokenType import TokenType, Delimiters, Keywords, Operators
-from TokenType import TokenBase, DataType
-from Parser import Parser
+from TokenType_placeholder import TokenType, Delimiters, Keywords, Operators
+from TokenType_placeholder import TokenBase, DataType
+from Parser_placeholder import Parser
 
 from pprint import pprint
 
 
 # C Source code file
-TEST_FILE = 'j:/c_Parser/c_files/two_functions.c'
+TEST_FILE = 'j:/c_Parser/c_files/decl_test.c'
 
 # Used for token IDs
 def get_next_key():
@@ -39,9 +39,9 @@ class Token:
 
     def __str__(self):
         if self.ofType:
-            return f'{self.Id:3} {self.base:18} {self.ofType:18} {self.value:18}'
+            return f'{self.Id:3} {self.base:26} {self.ofType:18} {self.value:18}'
         else:
-            return f'{self.Id:3} {self.base:18}{" "*18}{self.value:18}'
+            return f'{self.Id:3} {self.base:26}{"ofType: None":18}{self.value:18}'
 
 
 def main():
@@ -158,6 +158,8 @@ def modify_tokens_add_ofType_data(tokens):
         if token.value in Operators.Operators:
             token.ofType = Operators.to_type(token.value)
             print(token)
+        else:
+            token.ofType = None
 
     print('UNRECOGNIZED OPERATORS:')
     for token in tokens_sublist:

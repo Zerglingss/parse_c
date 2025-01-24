@@ -83,6 +83,8 @@ class TokenType(Enum):
     KEYWORD_TYPEDEF  = 'keyword_typedef'
     KEYWORD_CONST    = 'keyword_const'
     KEYWORD_STATIC   = 'keyword_static'
+    KEYWORD_UNION    = 'keyword_static'
+    KEYWORD_SIZEOF   = 'keyword_sizeof'
     IDENTIFIER       = 'identifier'
     LITERAL_SPECIAL  = 'literal_special'
     LITERAL_INT      = 'literal_int'
@@ -96,6 +98,7 @@ class TokenType(Enum):
     OPERATOR_LOGICAL = 'operator_logical'
     OPERATOR_BITWISE = 'operator_bitwise'
     OPERATOR_ASSIGNMENT = 'operator_assignment'
+    OPERATOR_INITIALIZER = 'operator_initializer'
     OPERATOR_TERNARY = 'operator_ternary'
     DELIM_SPECIAL    = 'delim_special'
     DELIM_LPAREN     = 'delim_lparen'
@@ -117,7 +120,9 @@ class Operators:
                     '-': TokenType.OPERATOR_ARITHMETIC,
                     
                     '/': TokenType.OPERATOR_ARITHMETIC,
-                    '%': TokenType.OPERATOR_ARITHMETIC}
+                    '%': TokenType.OPERATOR_ARITHMETIC,
+                    '=': TokenType.OPERATOR_ASSIGNMENT
+                    }
     Special_Operators = {
         '*': (TokenType.OPERATOR_UNARY,
                 TokenType.OPERATOR_ARITHMETIC),
@@ -296,22 +301,22 @@ class Delimiters:
 class Keywords:
     _mapping = {
         'int': TokenType.KEYWORD_INT,
-        'float': 'keyword_float',
-        'char': 'keyword_char',
-        'if': 'keyword_if',
-        'else': 'keyword_else',
-        'while': 'keyword_while',
-        'for': 'keyword_for',
+        'float': TokenType.KEYWORD_FLOAT,
+        'char': TokenType.KEYWORD_CHAR,
+        'if': TokenType.KEYWORD_IF,
+        'else': TokenType.KEYWORD_ELSE,
+        'while': TokenType.KEYWORD_WHILE,
+        'for': TokenType.KEYWORD_FOR,
         'return': TokenType.KEYWORD_RETURN,
         'void': TokenType.KEYWORD_VOID,
-        'break': 'keyword_break',
-        'continue': 'keyword_continue',
-        'struct': 'keyword_struct',
-        'typedef': 'keyword_typedef',
-        'const': 'keyword_const',
-        'static': 'keyword_static',
-        'union': 'keyword_union',
-        'sizeof': 'keyword_sizeof'}
+        'break': TokenType.KEYWORD_BREAK,
+        'continue': TokenType.KEYWORD_CONTINUE,
+        'struct': TokenType.KEYWORD_STRUCT,
+        'typedef': TokenType.KEYWORD_TYPEDEF,
+        'const': TokenType.KEYWORD_CONST,
+        'static': TokenType.KEYWORD_STATIC,
+        'union': TokenType.KEYWORD_UNION,
+        'sizeof': TokenType.KEYWORD_SIZEOF}
     _reverse_mapping = {v: k for k, v in _mapping.items()}
 
     @classmethod
