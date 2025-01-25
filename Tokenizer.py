@@ -9,14 +9,14 @@ import re
 
 
 from TokenType_placeholder import TokenType, Delimiters, Keywords, Operators
-from TokenType_placeholder import TokenBase, DataType
+from TokenType_placeholder import TokenBase, DataType, BinaryOperatorPrecedence
 from Parser_placeholder import Parser
 
 from pprint import pprint
 
 
 # C Source code file
-TEST_FILE = 'j:/c_Parser/c_files/decl_test.c'
+TEST_FILE = 'j:/c_Parser/c_files/statements_test.c'
 
 # Used for token IDs
 def get_next_key():
@@ -34,14 +34,16 @@ class Token:
     line: int = 0
     y1: int = 0
     y2: int = 0
+    opPrecedence: int = None
 
     # The DataType the token refers to, if it has one, else None
 
     def __str__(self):
         if self.ofType:
+            if self.opPrecedence:
+                return f'{self.Id:3} {self.base:26} {self.ofType:18} {self.value:18}{"Precedence: "+str(self.opPrecedence):18}'
             return f'{self.Id:3} {self.base:26} {self.ofType:18} {self.value:18}'
-        else:
-            return f'{self.Id:3} {self.base:26}{"ofType: None":18}{self.value:18}'
+        return f'{self.Id:3} {self.base:26}{"ofType: None":18}{self.value:18}'
 
 
 def main():
@@ -68,6 +70,8 @@ def main():
     for e in match:
         # For each match group, not very efficient
         for k, v in match_index_to_base.items():
+            if k == 0 or k == 1 or k == 2:
+                continue
             token = {}
             # Each token should have only 1 match besides the whitespace group
             if e[k]:
@@ -82,13 +86,15 @@ def main():
             if token:
                 tokens.append(token)
 
-    # debug print
-    for e in tokens:
-        print(e)
+    
 
     # Modifies and prints token data
     # Modification is in place, thus no return.
     modify_tokens_add_ofType_data(tokens)
+
+    # debug print
+    # for e in tokens:
+        # print(e)
 
 
     parser = Parser(tokens)
@@ -157,6 +163,8 @@ def modify_tokens_add_ofType_data(tokens):
     for token in tokens_sublist:
         if token.value in Operators.Operators:
             token.ofType = Operators.to_type(token.value)
+            if token.value in BinaryOperatorPrecedence.PRECEDENCE:
+                token.opPrecedence = BinaryOperatorPrecedence.PRECEDENCE[token.value]
             print(token)
         else:
             token.ofType = None

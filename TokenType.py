@@ -93,6 +93,7 @@ class TokenType(Enum):
     LITERAL_STRING   = 'literal_string'
     OPERATOR_SPECIAL = 'operator_special'
     OPERATOR_UNARY   = 'operator_unary'
+    OPERATOR_BINARY  = 'operator_binary'
     OPERATOR_ARITHMETIC = 'operator_arithmetic'
     OPERATOR_RELATIONAL = 'operator_relational'
     OPERATOR_LOGICAL = 'operator_logical'
@@ -112,24 +113,48 @@ class TokenType(Enum):
     DELIM_DOT        = 'delim_dot'
 
 
+class BinaryOperatorPrecedence:
+    PRECEDENCE = {
+    '*': 16,
+    '/': 16,
+    '+': 12,
+    '-': 12,
+    '==':3,
+    '!=': 3,
+    '&&': 2,
+    '||': 1
+}
+
+
+
+
 class Operators:
     # Make sure to include struct_deref (->) and elipsis at some point
     Operators = {
-                    '*': TokenType.OPERATOR_SPECIAL,
-                    '+': TokenType.OPERATOR_ARITHMETIC,
-                    '-': TokenType.OPERATOR_ARITHMETIC,
                     
-                    '/': TokenType.OPERATOR_ARITHMETIC,
-                    '%': TokenType.OPERATOR_ARITHMETIC,
-                    '=': TokenType.OPERATOR_ASSIGNMENT
+                    '+': TokenType.OPERATOR_BINARY,
+                    '-': TokenType.OPERATOR_BINARY,
+                    '*': TokenType.OPERATOR_BINARY,
+                    '/': TokenType.OPERATOR_BINARY,
+                    '%': TokenType.OPERATOR_BINARY,
+                    '=': TokenType.OPERATOR_ASSIGNMENT,
+                    'sizeof': TokenType.OPERATOR_UNARY,
+                    ':': TokenType.OPERATOR_UNARY,
+                    '&': TokenType.OPERATOR_BINARY,
+                    '==': TokenType.OPERATOR_BINARY,
+                    '!=': TokenType.OPERATOR_BINARY,
+                    '||': TokenType.OPERATOR_BINARY,
+                    '&&': TokenType.OPERATOR_BINARY,
+                    '--': TokenType.OPERATOR_UNARY,
+                    '++': TokenType.OPERATOR_UNARY,
+                    '!': TokenType.OPERATOR_UNARY,
+                    '~': TokenType.OPERATOR_UNARY
                     }
     Special_Operators = {
-        '*': (TokenType.OPERATOR_UNARY,
-                TokenType.OPERATOR_ARITHMETIC),
-        '&': (TokenType.OPERATOR_UNARY,
-            TokenType.OPERATOR_BITWISE),
-        ':': (TokenType.OPERATOR_UNARY, 
-            TokenType.OPERATOR_TERNARY)
+        '*': TokenType.OPERATOR_UNARY,
+        '&': TokenType.OPERATOR_UNARY,
+        '-': TokenType.OPERATOR_UNARY,
+        '+': TokenType.OPERATOR_UNARY
         }
 
     @classmethod
